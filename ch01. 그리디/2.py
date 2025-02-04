@@ -16,3 +16,6 @@ for i in range(2, len(s)):
         result += intarr[i]
 
 print(result)
+
+# 가장 간단히 풀 수 있는 방법을 생각해보기
+# -> 어떨 때만 덧셈이 효율적인지
