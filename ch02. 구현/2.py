@@ -23,3 +23,7 @@ sum_int = 0
 for i in arr_num:
     sum_int += i
 print(sum_int)
+
+# 숫자를 기준점으로 판단하는 방법도 있지만
+# 알파벳을 기준점으로 판단하는 방법도 있음
+# isalpha() 기억해두기
