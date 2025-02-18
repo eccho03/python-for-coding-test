@@ -1,61 +1,50 @@
-def move(location, direction):
-    new = location[-1][:]
-    new[0] += directions[direction][0]  # X 좌표
-    new[1] += directions[direction][1]  # Y 좌표
+def rotate(key):
+    return [list(reversed(c)) for c in zip(*key)]
+
+def create_new(lock, k):
+    l = len(lock)
+    n = l + 2 * (k - 1)
+    new = [[0] * n for _ in range(n)]
+    
+    for i in range(l):
+        for j in range(l):
+            new[i + k - 1][j + k - 1] = lock[i][j]
+    
     return new
 
-def check_game(location):
-    head = location[-1]
-    if head[0] < 0 or head[0] >= n or head[1] < 0 or head[1] >= n:
-        return True
+def attach(board, key, x, y):
+    k = len(key)
+    for i in range(k):
+        for j in range(k):
+            board[x+i][y+j] += key[i][j]
+
+def detach(board, key, x, y):
+    k = len(key)
+    for i in range(k):
+        for j in range(k):
+            board[x+i][y+j] -= key[i][j]
+            
+def check_unlock(board, l, k):
+    offset = k - 1
+    for i in range(l):
+        for j in range(l):
+            if board[i+offset][j+offset] != 1:
+                return False
+    return True
+
+def solution(key, lock):
+    l = len(lock)
+    k = len(key)
+    board = create_new(lock, k)
     
-    if head in location[:-1]:
-        return True
-
+    for _ in range(4):
+        key = rotate(key)
+        
+        for x in range(len(board) - k + 1):
+            for y in range(len(board) - k + 1):
+                attach(board, key, x, y)
+                if check_unlock(board, l, k):
+                    return True
+                detach(board, key, x, y)
+            
     return False
-    
-def check_apple(location):
-    if location[-1] in apple_loc:
-        apple_loc.remove(location[-1])
-        return True
-    return False
-
-n = int(input())
-k = int(input())
-
-apple_loc = []
-for _ in range(k):
-    row, col = map(int, input().split())
-    apple_loc.append([row - 1, col - 1])
-
-snake_move = []
-l = int(input())
-for _ in range(l):
-    x, c = map(str, input().split())
-    snake_move.append([int(x), c])
-
-directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 우, 하, 좌, 상
-cur_direct = 0
-
-time = 0
-snake_location = [[0, 0]]
-
-while True:
-    time += 1
-
-    new = move(snake_location, cur_direct)
-    snake_location.append(new)
-
-    if check_game(snake_location):
-        break
-
-    if not check_apple(snake_location):
-        snake_location.pop(0)
-
-    if snake_move and snake_move[0][0] == time:
-        _, turn  = snake_move.pop(0)
-        if turn == 'D':
-            cur_direct = (cur_direct + 1) % 4
-        else:
-            cur_direct = (cur_direct - 1) % 4
-print(time)
