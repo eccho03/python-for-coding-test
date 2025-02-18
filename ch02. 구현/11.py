@@ -1,5 +1,5 @@
 def move(location, direction):
-    new = location[-1][:]
+    new = location[-1][:] #복사
     new[0] += directions[direction][0]  # X 좌표
     new[1] += directions[direction][1]  # Y 좌표
     return new
