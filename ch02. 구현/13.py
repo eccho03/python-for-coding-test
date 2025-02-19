@@ -30,3 +30,7 @@ for k in chick_combi:
         cur_dist += dist
     min_dist = min(min_dist, cur_dist)
 print(min_dist)
+
+# for k in combinations(chick, m) 이런식으로 작성하면 더 깔끔
+# i, j 좌표로 하는 것 대신 for hx, hy in range 이런식으로 작성하는 게 더 깔끔
+# city에 넣고 그중에 고르지 말고 한 번에 입력 받으면서 집인지 치킨집인지 판단하기
